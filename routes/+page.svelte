@@ -1,7 +1,10 @@
 <script lang="ts">
 	import Plus from 'svelte-icons/fa/FaPlus.svelte'
 
+	import { goto } from '$app/navigation'
+
 	import CODE_LENGTH from '../shared/code/length.js'
+	import errorFromValue from '../shared/error/from/value.js'
 	import MetaImage from '../components/Meta/Image.svelte'
 	import MetaTitle from '../components/Meta/Title.svelte'
 	import MetaDescription from '../components/Meta/Description.svelte'
@@ -13,11 +16,43 @@
 	let code = ''
 	let joinLoading = false
 
-	const join = () => {}
+	const join = async () => {
+		try {
+			if (code.length !== CODE_LENGTH || joinLoading) return
+			joinLoading = true
+
+			const response = await fetch(`/games/${encodeURIComponent(code)}/exists`)
+			const exists: boolean = await response.json()
+
+			exists
+				? await goto(`/${encodeURIComponent(code)}`)
+				: alert('Invalid code')
+		} catch (value) {
+			console.log(value)
+			alert(errorFromValue(value).message)
+		} finally {
+			joinLoading = false
+		}
+	}
 
 	let createLoading = false
 
-	const create = () => {}
+	const create = async () => {
+		try {
+			if (createLoading) return
+			createLoading = true
+
+			const response = await fetch('/games', { method: 'POST' })
+			const code = await response.text()
+
+			await goto(`/${encodeURIComponent(code)}`)
+		} catch (value) {
+			console.log(value)
+			alert(errorFromValue(value).message)
+		} finally {
+			createLoading = false
+		}
+	}
 </script>
 
 <MetaImage />
@@ -100,6 +135,10 @@
 		-webkit-text-fill-color: transparent;
 		-moz-text-fill-color: transparent;
 		transition: opacity 0.3s;
+
+		&:hover {
+			opacity: 0.7;
+		}
 
 		&[aria-busy],
 		&:disabled {

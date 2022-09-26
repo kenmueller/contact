@@ -22,7 +22,7 @@
 			joinLoading = true
 
 			const response = await fetch(`/games/${encodeURIComponent(code)}/exists`)
-			const exists: boolean = await response.json()
+			const exists = (await response.json()) as boolean
 
 			exists
 				? await goto(`/${encodeURIComponent(code)}`)

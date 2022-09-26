@@ -13,6 +13,7 @@
 	}
 
 	h1 {
+		font-weight: 900;
 		background: linear-gradient(to right, colors.$purple, colors.$orange);
 		background-clip: text;
 		-webkit-text-fill-color: transparent;

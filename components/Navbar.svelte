@@ -1,5 +1,5 @@
 <nav>
-	<h1>Contact!</h1>
+	<a href="/">Contact!</a>
 </nav>
 
 <style lang="scss">
@@ -12,7 +12,8 @@
 		border-bottom: 0.125rem solid rgba(black, 0.05);
 	}
 
-	h1 {
+	a {
+		font-size: 1.5rem;
 		font-weight: 900;
 		background: linear-gradient(to right, colors.$purple, colors.$orange);
 		background-clip: text;
